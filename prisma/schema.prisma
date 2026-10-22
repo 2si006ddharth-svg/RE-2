@@ -1,0 +1,83 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  name         String
+  email        String         @unique
+  passwordHash String
+  role         String         @default("customer") // "customer" | "admin"
+  createdAt    DateTime       @default(now())
+  orders       Order[]
+  loyalty      LoyaltyStatus?
+  notifications Notification[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  imageUrl    String      @default("")
+  stock       Int         @default(100)
+  category    String
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  orderItems  OrderItem[]
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  subtotal        Float
+  discountPercent Float       @default(0)
+  discountAmount  Float       @default(0)
+  total           Float
+  status          String      @default("pending") // "pending" | "paid" | "cancelled" | "refunded"
+  createdAt       DateTime    @default(now())
+  paidAt          DateTime?
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  unitPrice Float
+}
+
+model LoyaltyStatus {
+  userId                String   @id
+  user                  User     @relation(fields: [userId], references: [id])
+  isRegular             Boolean  @default(false)
+  streakCount           Int      @default(0)
+  currentDiscountPercent Float   @default(0)
+  lastPurchaseAt        DateTime?
+  expiresAt             DateTime?
+  updatedAt             DateTime @updatedAt
+}
+
+model Notification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id])
+  type      String    // "reminder" | "status_change" | "streak" | "welcome"
+  message   String
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+}
+
+model Setting {
+  key   String @id
+  value String
+}
