@@ -11,12 +11,15 @@
   "dependencies": {
     "@prisma/client": "6.6.0",
     "bcryptjs": "^3.0.3",
+    "canvas-confetti": "^1.9.4",
     "jose": "^6.2.12",
+    "lucide-react": "^1.56.0",
     "next": "16.4.0",
     "node-cron": "^4.6.0",
     "prisma": "6.6.0",
     "react": "19.3.0",
     "react-dom": "19.3.0",
+    "tsx": "^4.23.15",
     "zod": "^4.6.7"
   },
   "devDependencies": {
@@ -27,12 +30,9 @@
     "@types/node-cron": "^3.0.11",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "canvas-confetti": "^1.9.4",
     "eslint": "^9",
     "eslint-config-next": "16.4.0",
-    "lucide-react": "^1.56.0",
     "tailwindcss": "^4",
-    "tsx": "^4.23.15",
     "typescript": "^5",
     "vite": "^8.3.4",
     "vitest": "^5.0.4"
