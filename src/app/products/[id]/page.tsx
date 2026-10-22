@@ -14,6 +14,7 @@ import {
   RotateCcw,
   Flame,
   ArrowLeft,
+  Loader2,
 } from 'lucide-react';
 
 interface Product {
@@ -26,7 +27,7 @@ interface Product {
   stock: number;
 }
 
-export default function ProductDetailPage() {
+function ProductDetailContent() {
   const params = useParams();
   const id = params?.id as string;
   const { user, loyalty } = useAuth();
@@ -244,5 +245,20 @@ export default function ProductDetailPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ProductDetailPage() {
+  return (
+    <React.Suspense
+      fallback={
+        <div className="max-w-7xl mx-auto px-4 py-20 text-center text-slate-400">
+          <Loader2 className="w-8 h-8 animate-spin mx-auto text-indigo-600 mb-2" />
+          <p className="text-sm font-medium">Loading product details...</p>
+        </div>
+      }
+    >
+      <ProductDetailContent />
+    </React.Suspense>
   );
 }
